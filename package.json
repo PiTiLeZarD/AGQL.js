@@ -1,0 +1,8 @@
+{
+    "private": true,
+    "workspaces": [
+        "repos/libs/*",
+        "repos/react/*",
+        "repos/nodejs/*"
+    ]
+}
