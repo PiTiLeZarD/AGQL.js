@@ -4,5 +4,11 @@
         "repos/libs/*",
         "repos/react/*",
         "repos/nodejs/*"
-    ]
+    ],
+    "dependencies": {
+        "nodemon": "^2.0.7"
+    },
+    "scripts": {
+        "start": "nodemon ./repos/nodejs/server/src/index.mjs"
+    }
 }
