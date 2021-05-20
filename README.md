@@ -9,8 +9,8 @@ So this is an attempt at solving that issue and as with all projects, an attemps
 I will update this readme if anything interesting happens but for now
 
 ```
-yarn install
-yarn start
+cd docker
+docker-compose up -d
 ```
 
-Will get you the server running with a basic homepage and an even more basic /backend/graphql, /backend/graphql/playground setup.
+Will get you the server running on localhost:4000 with a basic homepage and an even more basic /backend/graphql, /backend/graphql/playground setup.
