@@ -1,15 +1,20 @@
 import { graphqlHTTP } from "express-graphql";
 import { buildSchema } from "graphql";
 import expressPlayground from "graphql-playground-middleware-express";
+import { models } from "./db.mjs";
 
 const schema = buildSchema(`
+    type Entity {
+        id: Int
+        name: String
+    }
     type Query {
-        hello: String
+        entities: [Entity]
     }
 `);
 
 const rootValue = {
-    hello: () => "world!",
+    entities: () => models.Entity.findAll(),
 };
 
 const bootstrap = (app) => {
