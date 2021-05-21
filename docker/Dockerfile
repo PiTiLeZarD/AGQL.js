@@ -10,5 +10,5 @@ RUN mkdir /app /db \
 COPY . /app
 WORKDIR /app
 
-VOLUME [ "/db" ]
+VOLUME [ "/db", "/app/node_modules" ]
 ENTRYPOINT [ "/entrypoint" ]

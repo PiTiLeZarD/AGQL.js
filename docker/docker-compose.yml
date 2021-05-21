@@ -8,6 +8,7 @@ x-agql: &agql
     volumes:
         - ..:/app
         - db:/db
+        - node_modules:/app/node_modules
 
 services:
     server:
@@ -20,3 +21,5 @@ services:
 volumes:
     db:
         name: agqldb
+    node_modules:
+        name: agqlnodemod
