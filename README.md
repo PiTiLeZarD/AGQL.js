@@ -13,4 +13,9 @@ cd docker
 docker-compose up -d
 ```
 
-Will get you the server running on localhost:4000 with a basic homepage and an even more basic /backend/graphql, /backend/graphql/playground setup.
+Will get you:
+
+-   A home page on localhost:4000
+-   the backend graphql server running on localhost:4000/backend/graphql
+-   a playground for that server on localhost:4000/backend/graphql/playground
+-   a react app for the admin system on localhost:1234
