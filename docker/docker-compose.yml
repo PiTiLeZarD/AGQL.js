@@ -7,6 +7,7 @@ x-agql: &agql
         dockerfile: docker/Dockerfile
     volumes:
         - ..:/app
+        - db:/db
 
 services:
     server:
@@ -15,3 +16,7 @@ services:
         command: yarn start
         ports:
             - 4000:4000
+
+volumes:
+    db:
+        name: agqldb
