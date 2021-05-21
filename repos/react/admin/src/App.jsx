@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { Grid, Paper } from "@material-ui/core";
 import AgqlEffect from "./AgqlEffect";
 
 const App = (props) => {
@@ -16,9 +17,20 @@ const App = (props) => {
                     background: #030005;
                 }
             `}</style>
-            <AgqlEffect foreground="Graphql Made Easy" background="AGQL" />
-            <AgqlEffect foreground="Admin Panel Powered By" background="React" size={80} />
-            <AgqlEffect foreground="Yeaaaaaah!" background="Hek" size={400} />
+            <div style={{ margin: "3em auto" }}>
+                <AgqlEffect foreground="Graphql Made Easy" background="AGQL" size={80} />
+            </div>
+            <Grid container spacing={8}>
+                <Grid item xs={2} />
+                <Grid item xs={4}>
+                    <Paper style={{ padding: "1.5em" }}>Here entities</Paper>
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Paper style={{ padding: "1.5em" }}>here details about entities</Paper>
+                </Grid>
+                <Grid item xs={2} />
+            </Grid>
         </Fragment>
     );
 };
