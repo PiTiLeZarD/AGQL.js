@@ -10,7 +10,7 @@ I will update this readme if anything interesting happens but for now
 
 ```
 cd docker
-docker-compose up -d
+docker-compose up
 ```
 
 Will get you:
