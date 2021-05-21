@@ -14,9 +14,16 @@ services:
     server:
         <<: *agql
         container_name: agql
-        command: yarn start
+        command: yarn server
         ports:
             - 4000:4000
+
+    admin:
+        <<: *agql
+        container_name: agql_admin
+        command: yarn admin
+        ports:
+            - 1234:1234
 
 volumes:
     db:

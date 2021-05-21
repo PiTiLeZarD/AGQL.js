@@ -6,10 +6,15 @@
         "repos/nodejs/*"
     ],
     "dependencies": {
+        "@babel/preset-react": "^7.13.13",
+        "@parcel/babel-plugin-transform-runtime": "^2.0.0-nightly.1823",
+        "@parcel/babel-preset-env": "^2.0.0-alpha.3",
         "nodemon": "^2.0.7",
+        "parcel": "^2.0.0-nightly.678",
         "sqlite3": "^5.0.2"
     },
     "scripts": {
-        "start": "nodemon ./repos/nodejs/server/src/index.mjs"
+        "server": "nodemon ./repos/nodejs/server/src/index.mjs",
+        "admin": "parcel ./repos/react/admin/src/index.html"
     }
 }
