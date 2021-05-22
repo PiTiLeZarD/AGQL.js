@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { RelayEnvironmentProvider } from "react-relay";
 import RelayEnvironment from "./relay";
 
-import AgqlEffect from "./AgqlEffect";
-import EntityManager from "./EntityManager";
+import AgqlEffect from "./components/AgqlEffect";
+import EntityManager from "./components/EntityManager";
 
 const App = (props) => {
     return (
