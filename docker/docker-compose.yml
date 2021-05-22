@@ -11,9 +11,9 @@ x-agql: &agql
         - node_modules:/app/node_modules
 
 services:
-    backend:
+    server:
         <<: *agql
-        container_name: agql_backend
+        container_name: agql_server_all
         command: yarn server
         ports:
             - ${BACKEND_PORT}:${BACKEND_PORT}

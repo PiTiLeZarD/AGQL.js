@@ -16,6 +16,10 @@ docker-compose up
 Will get you:
 
 -   A home page on localhost:4000
--   the backend graphql server running on localhost:4000/backend/graphql
--   a playground for that server on localhost:4000/backend/graphql/playground
+-   the backend graphql server running on localhost:4000/backend/graphql (with playground localhost:4000/backend/graphql/playground)
+-   the graphql server running on localhost:4000/graphql (with playground localhost:4000/graphql/playground)
 -   a react app for the admin system on localhost:1234
+
+docker/.env lets you configure ports and all.
+
+You can also run the main graphql server and the backend separately with the environment variable SERVER_MODE=[all|backend|graphql]. I chose all for dev
