@@ -11,19 +11,23 @@ x-agql: &agql
         - node_modules:/app/node_modules
 
 services:
-    server:
+    backend:
         <<: *agql
-        container_name: agql
+        container_name: agql_backend
         command: yarn server
         ports:
-            - 4000:4000
+            - ${BACKEND_PORT}:${BACKEND_PORT}
+        environment:
+            - DEBUG=${DEBUG}
+            - SERVER_PORT=${BACKEND_PORT}
+            - SERVER_MODE=backend
 
     admin:
         <<: *agql
         container_name: agql_admin
-        command: yarn admin
+        command: yarn admin -p ${ADMIN_PORT}
         ports:
-            - 1234:1234
+            - ${ADMIN_PORT}:${ADMIN_PORT}
 
 volumes:
     db:
