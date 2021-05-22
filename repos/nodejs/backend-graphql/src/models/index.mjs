@@ -1,9 +1,7 @@
 import initEntity from "./entity.mjs";
 
-const initModels = (db) => {
-    return {
-        Entity: initEntity(db),
-    };
-};
+const initModels = (db) => ({
+    Entity: initEntity(db),
+});
 
 export default initModels;
