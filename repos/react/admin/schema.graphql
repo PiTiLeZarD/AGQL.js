@@ -1,0 +1,23 @@
+"""Exposes a URL that specifies the behaviour of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behaviour of this scalar."""
+  url: String!
+) on SCALAR
+
+type Entity {
+  _id: Int
+  name: String
+}
+
+input EntityInput {
+  name: String!
+}
+
+type Mutation {
+  createEntity(input: EntityInput): Entity
+}
+
+type Query {
+  entities: [Entity]
+}
+

@@ -1,0 +1,5 @@
+{
+    "ignore": [".git", "node_modules/**/node_modules"],
+    "watch": ["repos/nodejs", "repos/libs"],
+    "ext": "js,mjs"
+}

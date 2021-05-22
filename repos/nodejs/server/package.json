@@ -2,9 +2,10 @@
     "name": "@agql.js/server",
     "version": "1.0.0",
     "dependencies": {
-        "express": "^4.17.1",
         "@agql.js/backend-graphql": "^1.0.0",
-        "@agql.js/graphql": "^1.0.0"
+        "@agql.js/graphql": "^1.0.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1"
     },
     "main": "src/index.mjs"
 }

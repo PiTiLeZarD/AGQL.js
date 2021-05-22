@@ -8,5 +8,5 @@
             }
         ]
     ],
-    "plugins": ["@parcel/babel-plugin-transform-runtime"]
+    "plugins": ["relay", "@parcel/babel-plugin-transform-runtime"]
 }

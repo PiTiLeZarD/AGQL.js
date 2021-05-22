@@ -4,5 +4,9 @@ set -e
 cd /app
 yarn install
 
+if [ ! -z $COMPILE_RELAY ]; then
+    yarn relay
+fi
+
 # run the provided cmd
 exec "$@"

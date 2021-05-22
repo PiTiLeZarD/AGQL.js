@@ -2,7 +2,7 @@ import { buildSchema } from "graphql";
 
 const types = `
     type Entity {
-        id: Int
+        _id: Int
         name: String
     }
 `;

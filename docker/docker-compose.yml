@@ -28,6 +28,9 @@ services:
         command: yarn admin -p ${ADMIN_PORT}
         ports:
             - ${ADMIN_PORT}:${ADMIN_PORT}
+        environment:
+            - BACKEND_GQL_API_URL=${BACKEND_GQL_API_URL}
+            - COMPILE_RELAY=1
 
 volumes:
     db:

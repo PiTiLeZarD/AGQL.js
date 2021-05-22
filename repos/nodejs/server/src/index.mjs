@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 import homepage from "./homepage.mjs";
 import backend from "@agql.js/backend-graphql";
@@ -6,6 +7,8 @@ import graphql from "@agql.js/graphql";
 
 const app = express();
 app.debug = process.env.DEBUG == 1;
+
+app.use(cors());
 
 if (app.debug) {
     app.use((req, res, next) => {

@@ -3,7 +3,7 @@ const { DataTypes } = sequelize;
 
 const entity = (db) =>
     db.define("Entity", {
-        id: {
+        _id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
