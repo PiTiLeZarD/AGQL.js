@@ -20,7 +20,7 @@ services:
         environment:
             - DEBUG=${DEBUG}
             - SERVER_PORT=${BACKEND_PORT}
-            - SERVER_MODE=backend
+            - SERVER_MODE=all
 
     admin:
         <<: *agql

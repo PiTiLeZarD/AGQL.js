@@ -2,6 +2,7 @@ import express from "express";
 
 import homepage from "./homepage.mjs";
 import backend from "@agql.js/backend-graphql";
+import graphql from "@agql.js/graphql";
 
 const app = express();
 app.debug = process.env.DEBUG == 1;
@@ -16,6 +17,9 @@ if (app.debug) {
 const mode = process.env.SERVER_MODE;
 if (mode == "backend" || mode == "all") {
     backend(app);
+}
+if (mode == "graphql" || mode == "all") {
+    graphql(app);
 }
 
 app.use("/", (req, res) => res.send(homepage));
