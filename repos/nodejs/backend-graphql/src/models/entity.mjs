@@ -1,14 +1,10 @@
 import sequelize from "sequelize";
+import { globalIdField } from "@agql.js/db";
 const { DataTypes } = sequelize;
 
-const entity = (db, globalId) =>
+const entity = (db) =>
     db.define("Entity", {
-        _id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        id: globalId,
+        ...globalIdField(),
         name: {
             type: DataTypes.STRING,
         },
