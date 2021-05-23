@@ -1,12 +1,7 @@
 import { graphqlHTTP } from "express-graphql";
 import expressPlayground from "graphql-playground-middleware-express";
-import { models } from "./db.mjs";
 import schema from "./schema.mjs";
-
-const rootValue = {
-    entities: () => models.Entity.findAll(),
-    createEntity: async ({ input }) => await models.Entity.create({ name: input.name }),
-};
+import rootValue from "./root.mjs";
 
 const bootstrap = (app) => {
     if (app.debug) {
