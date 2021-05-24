@@ -1,5 +1,9 @@
 {
     "name": "@agql.js/schema",
     "version": "1.0.0",
-    "dependencies": {}
+    "dependencies": {
+        "graphql": "^15.5.0",
+        "graphql-compose": "^8.1.0"
+    },
+    "main": "src/index.mjs"
 }

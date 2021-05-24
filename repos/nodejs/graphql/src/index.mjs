@@ -1,16 +1,6 @@
 import { graphqlHTTP } from "express-graphql";
-import { buildSchema } from "graphql";
 import expressPlayground from "graphql-playground-middleware-express";
-
-const schema = buildSchema(`
-    type Query {
-        hello: String
-    }
-`);
-
-const rootValue = {
-    hello: () => "world !",
-};
+import { schema, rootValue } from "@agql.js/schema";
 
 const bootstrap = (app) => {
     if (app.debug) {
