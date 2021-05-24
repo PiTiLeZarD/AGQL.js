@@ -1,7 +1,7 @@
 import initEntity from "./entity.mjs";
 
-const initModels = (db) => ({
+const backendModel = (db) => ({
     Entity: initEntity(db),
 });
 
-export default initModels;
+export default backendModel;

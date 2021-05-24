@@ -1,9 +1,8 @@
-import initModels from "./models/index.mjs";
-import { sqliteConnection } from "@agql.js/db";
+import { sqliteConnection, backendModel } from "@agql.js/db";
 
 const getBackendGraphqlDb = () => {
     const db = sqliteConnection(process.env.SCHEMA_CONFIG_DB_PATH || "./backend-graphql.sqlite3");
-    const models = initModels(db);
+    const models = backendModel(db);
     db.sync();
     return { db, models };
 };

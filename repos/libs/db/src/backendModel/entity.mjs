@@ -1,5 +1,6 @@
+import globalIdField from "../globalIdField.mjs";
+
 import sequelize from "sequelize";
-import { globalIdField } from "@agql.js/db";
 const { DataTypes } = sequelize;
 
 const entity = (db) =>
