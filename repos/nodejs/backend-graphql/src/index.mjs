@@ -11,8 +11,8 @@ const bootstrap = (app) => {
     app.use(
         "/backend/graphql",
         graphqlHTTP({
-            schema,
-            rootValue,
+            schema: schema(),
+            rootValue: rootValue(),
             graphiql: false,
         })
     );

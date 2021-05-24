@@ -1,13 +1,10 @@
-import sequelize from "sequelize";
 import initModels from "./models/index.mjs";
-const { Sequelize } = sequelize;
+import { sqliteConnection } from "@agql.js/db";
 
-const storage = process.env.SCHEMA_CONFIG_DB_PATH || "./backend-graphql.sqlite3";
-const config = { dialect: "sqlite", storage };
-const db = new Sequelize(config);
-
-export const models = initModels(db);
-
-db.sync();
-
-export default db;
+const getBackendGraphqlDb = () => {
+    const db = sqliteConnection(process.env.SCHEMA_CONFIG_DB_PATH || "./backend-graphql.sqlite3");
+    const models = initModels(db);
+    db.sync();
+    return { db, models };
+};
+export default getBackendGraphqlDb;

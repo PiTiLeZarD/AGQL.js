@@ -30,12 +30,13 @@ const mutations = `
     }
 `;
 
-const schema = buildSchema(`
-    ${types}
-    ${queries}
-    ${inputs}
-    ${outputs}
-    ${mutations}
-`);
+const schema = () =>
+    buildSchema(`
+        ${types}
+        ${queries}
+        ${inputs}
+        ${outputs}
+        ${mutations}
+    `);
 
 export default schema;
