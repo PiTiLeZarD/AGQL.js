@@ -5,23 +5,26 @@ import { TextField } from "formik-material-ui";
 import MutationButton from "./MutationButton";
 
 const SaveButton = (props) => {
-    const { onError } = props;
+    const { onError, onCompleted } = props;
     const { values } = useFormikContext();
 
     return (
         <MutationButton
             label="Save"
             mutation={graphql`
-                mutation EntityFormSaveMutation($input: EntityInput!) {
+                mutation EntityFormAddMutation($input: EntityInput!) {
                     createEntity(input: $input) {
-                        id
-                        name
+                        node {
+                            id
+                            name
+                        }
                     }
                 }
             `}
+            linkRecordsParams={({ createEntity }) => [createEntity.node.id, "entities"]}
             variables={{ input: values }}
-            onCompleted={(params) => {
-                console.log("onCompleted", params);
+            onCompleted={({ createEntity }) => {
+                if (onCompleted) onCompleted(createEntity.node);
             }}
             onError={onError}
             ButtonProps={{
@@ -34,6 +37,8 @@ const SaveButton = (props) => {
 };
 
 const EntityForm = (props) => {
+    const { onCompleted } = props;
+
     return (
         <Formik initialValues={{ name: "" }}>
             <Form>
@@ -43,7 +48,7 @@ const EntityForm = (props) => {
                         <Field name="name" component={TextField} label="Name" />
                     </CardContent>
                     <CardActions>
-                        <SaveButton onError={() => console.error(arguments)} />
+                        <SaveButton onCompleted={onCompleted} />
                     </CardActions>
                 </Card>
             </Form>

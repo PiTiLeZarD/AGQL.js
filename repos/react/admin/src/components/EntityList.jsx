@@ -12,7 +12,7 @@ const EntityList = (props) => {
     return (
         <Fragment>
             <Dialog open={addEntityFormOpen} onClose={(ev) => setAddEntityFormOpen(false)}>
-                <EntityForm />
+                <EntityForm onCompleted={(entity) => setAddEntityFormOpen(false)} />
             </Dialog>
             <Card>
                 <CardHeader

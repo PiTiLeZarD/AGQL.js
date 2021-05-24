@@ -12,6 +12,12 @@ const inputs = `
     }
 `;
 
+const outputs = `
+    type EntityOutput {
+        node: Entity
+    }
+`;
+
 const queries = `
     type Query {
         entities: [Entity]
@@ -20,7 +26,7 @@ const queries = `
 
 const mutations = `
     type Mutation {
-        createEntity(input: EntityInput): Entity
+        createEntity(input: EntityInput): EntityOutput
     }
 `;
 
@@ -28,6 +34,7 @@ const schema = buildSchema(`
     ${types}
     ${queries}
     ${inputs}
+    ${outputs}
     ${mutations}
 `);
 

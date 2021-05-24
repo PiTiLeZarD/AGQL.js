@@ -13,8 +13,12 @@ input EntityInput {
   name: String!
 }
 
+type EntityOutput {
+  node: Entity
+}
+
 type Mutation {
-  createEntity(input: EntityInput): Entity
+  createEntity(input: EntityInput): EntityOutput
 }
 
 type Query {
