@@ -5,7 +5,7 @@ directive @specifiedBy(
 ) on SCALAR
 
 type Entity {
-  _id: Int
+  id: String
   name: String
 }
 

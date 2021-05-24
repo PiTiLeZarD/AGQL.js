@@ -14,7 +14,7 @@ const SaveButton = (props) => {
             mutation={graphql`
                 mutation EntityFormSaveMutation($input: EntityInput!) {
                     createEntity(input: $input) {
-                        _id
+                        id
                         name
                     }
                 }

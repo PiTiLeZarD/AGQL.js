@@ -8,7 +8,7 @@ import EntityDetails from "./EntityDetails";
 const EntitiesQuery = graphql`
     query EntityManagerEntitiesQuery {
         entities {
-            _id
+            id
             name
             ...EntityDetails_entity
         }

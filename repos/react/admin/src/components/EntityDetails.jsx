@@ -8,7 +8,7 @@ const EntityDetails = (props) => {
     const entity = useFragment(
         graphql`
             fragment EntityDetails_entity on Entity {
-                _id
+                id
                 name
             }
         `,
@@ -18,8 +18,8 @@ const EntityDetails = (props) => {
     return (
         <Card>
             <CardHeader
-                title={`${entity._id}: ${entity.name}`}
-                subheader={`Other informations`}
+                title={entity.name}
+                subheader={entity.id}
                 action={
                     <IconButton>
                         <MoreVertIcon />
