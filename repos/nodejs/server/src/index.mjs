@@ -22,7 +22,7 @@ if (mode == "backend" || mode == "all") {
     backend(app);
 }
 if (mode == "graphql" || mode == "all") {
-    graphql(app);
+    await graphql(app);
 }
 
 app.use("/", (req, res) => res.send(homepage));

@@ -1,13 +1,3 @@
-import { buildSchema } from "graphql";
+import interpolateSchema from "./interpolateSchema.mjs";
 
-const schema = buildSchema(`
-    type Query {
-        hello: String
-    }
-`);
-
-const rootValue = {
-    hello: () => "world !",
-};
-
-export { schema, rootValue };
+export { interpolateSchema };

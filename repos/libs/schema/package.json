@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "dependencies": {
         "graphql": "^15.5.0",
-        "graphql-compose": "^8.1.0"
+        "graphql-compose": "^8.1.0",
+        "pluralize": "^8.0.0"
     },
     "main": "src/index.mjs"
 }

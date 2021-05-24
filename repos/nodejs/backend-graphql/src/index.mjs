@@ -1,7 +1,7 @@
 import { graphqlHTTP } from "express-graphql";
 import expressPlayground from "graphql-playground-middleware-express";
 import schema from "./schema.mjs";
-import rootValue from "./root.mjs";
+import rootValue from "./rootValue.mjs";
 
 const bootstrap = (app) => {
     if (app.debug) {
