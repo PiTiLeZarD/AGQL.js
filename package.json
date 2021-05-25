@@ -5,7 +5,7 @@
         "repos/react/*",
         "repos/nodejs/*"
     ],
-    "dependencies": {
+    "devDependencies": {
         "@babel/core": "^7.14.3",
         "@babel/preset-react": "^7.13.13",
         "@parcel/babel-plugin-transform-runtime": "^2.0.0-nightly.1823",
@@ -16,7 +16,8 @@
         "nodemon": "^2.0.7",
         "parcel": "^2.0.0-nightly.678",
         "relay-compiler": "^11.0.2",
-        "sqlite3": "^5.0.2"
+        "sqlite3": "^5.0.2",
+        "mariadb": "^2.5.3"
     },
     "scripts": {
         "server": "nodemon ./repos/nodejs/server/src/index.mjs",

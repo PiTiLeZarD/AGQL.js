@@ -1,13 +1,23 @@
 import { graphqlHTTP } from "express-graphql";
 import expressPlayground from "graphql-playground-middleware-express";
-import { interpolateModels, sqliteConnection, backendModel } from "@agql.js/db";
+import { interpolateModels, dbConnection, backendModel } from "@agql.js/db";
 import { interpolateSchema } from "@agql.js/schema";
+import fs from "fs";
 
 const bootstrap = async (app) => {
-    const testDb = sqliteConnection("./test.sqlite3");
+    const testDb = dbConnection({
+        dialect: "mariadb",
+        host: process.env.GRAPHQL_DB_HOST,
+        database: process.env.GRAPHQL_DB_DATABASE,
+        username: process.env.GRAPHQL_DB_USERNAME,
+        password: fs.readFileSync(process.env.GRAPHQL_DB_PASSWORD_FILE, "utf8"),
+    });
 
     const backendModels = backendModel(
-        sqliteConnection(process.env.SCHEMA_CONFIG_DB_PATH || "./backend-graphql.sqlite3")
+        dbConnection({
+            dialect: "sqlite",
+            storage: process.env.SCHEMA_CONFIG_DB_PATH || "./backend-graphql.sqlite3",
+        })
     );
     const models = await interpolateModels(testDb, backendModels);
     const { schema } = await interpolateSchema(models, backendModels);
