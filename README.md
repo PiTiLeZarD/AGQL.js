@@ -22,7 +22,7 @@ docker-compose up
 
 -   A home page on localhost:4000
 -   the backend graphql server running on localhost:4000/backend/graphql (with playground localhost:4000/backend/graphql/playground)
--   the graphql server running on localhost:4000/graphql (with playground localhost:4000/graphql/playground)
+-   the graphql server running on localhost:5000/graphql (with playground localhost:5000/graphql/playground)
 -   a react app for the admin system on localhost:1234
 -   an adminer service connected to a mariadb server on localhost:8080
 
