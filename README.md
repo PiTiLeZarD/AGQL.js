@@ -8,8 +8,9 @@ So this is an attempt at solving that issue and as with all projects, an attempt
 
 I will update this readme if anything interesting happens but for now
 
-```
+```sh
 cd docker
+docker-compose run --rm --no-deps graphql yarn install
 docker-compose up
 ```
 

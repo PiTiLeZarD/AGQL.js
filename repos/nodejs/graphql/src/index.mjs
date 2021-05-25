@@ -6,7 +6,9 @@ import { interpolateSchema } from "@agql.js/schema";
 const bootstrap = async (app) => {
     const testDb = sqliteConnection("./test.sqlite3");
 
-    const backendModels = backendModel(sqliteConnection("/db/backend-graphql.sqlite3"));
+    const backendModels = backendModel(
+        sqliteConnection(process.env.SCHEMA_CONFIG_DB_PATH || "./backend-graphql.sqlite3")
+    );
     const models = await interpolateModels(testDb, backendModels);
     const { schema } = await interpolateSchema(models, backendModels);
 

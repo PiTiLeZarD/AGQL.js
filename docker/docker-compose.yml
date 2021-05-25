@@ -9,6 +9,7 @@ x-agql: &agql
         - ..:/app
         - db:/db
         - node_modules:/app/node_modules
+        - parcel_cache:/app/.parcel-cache
 
 services:
     backend:
@@ -21,6 +22,7 @@ services:
             - DEBUG=${DEBUG}
             - SERVER_PORT=${BACKEND_PORT}
             - SERVER_MODE=backend
+            - SCHEMA_CONFIG_DB_PATH=${SCHEMA_CONFIG_DB_PATH}
 
     graphql:
         <<: *agql
@@ -32,6 +34,7 @@ services:
             - DEBUG=${DEBUG}
             - SERVER_PORT=${GRAPHQL_PORT}
             - SERVER_MODE=graphql
+            - SCHEMA_CONFIG_DB_PATH=${SCHEMA_CONFIG_DB_PATH}
 
     admin:
         <<: *agql
@@ -48,3 +51,5 @@ volumes:
         name: agqldb
     node_modules:
         name: agqlnodemod
+    parcel_cache:
+        name: agqlparcelcache
