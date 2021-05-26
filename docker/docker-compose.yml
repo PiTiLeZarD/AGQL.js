@@ -52,7 +52,7 @@ services:
             - BACKEND_GQL_API_URL=${BACKEND_GQL_API_URL}
             - COMPILE_RELAY=1
 
-    db:
+    mariadb:
         image: mariadb
         container_name: ${GRAPHQL_DB_HOST}
         secrets:
@@ -65,7 +65,7 @@ services:
             - MARIADB_USER=${GRAPHQL_DB_USERNAME}
             - MARIADB_PASSWORD_FILE=${GRAPHQL_DB_PASSWORD_FILE}
 
-    adminer:
+    agql_adminer:
         image: adminer
         container_name: agql_adminer
         ports:
