@@ -15,7 +15,13 @@ I will update this readme if anything interesting happens but for now
 ```sh
 cd docker
 docker-compose run --rm --no-deps graphql yarn install
-docker-compose up
+docker-compose up -d
+```
+
+Everytime you change the schema you'll have to restart the graphql schema (for now)
+
+```sh
+docker-compose restart graphql
 ```
 
 ## Services
