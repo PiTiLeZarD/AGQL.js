@@ -16,15 +16,26 @@ const MutationButton = (props) => {
     const environment = useRelayEnvironment();
     const linkRecords = (data) => {
         const [nodeId, parent] = linkRecordsParams(data);
+
         commitLocalUpdate(environment, (store) => {
             if (parent == null) {
-                return store.delete(nodeId);
+                store.delete(nodeId);
+                if (onCompleted) return onCompleted(data);
             }
-            const root = store.getRoot();
             const record = store.get(nodeId);
-            const collection = root.getLinkedRecords(parent) || [];
-            root.setLinkedRecords([...collection.filter((v) => v.getDataID() != record.getDataID()), record], parent);
-            if (onCompleted) onCompleted(data);
+            const parentNode = parent
+                .split(".")
+                .slice(0, -1)
+                .reduce((acc, elmt) => acc.getLinkedRecord(elmt), store.getRoot());
+            const collectionName = parent.split(".").splice(-1);
+            const collection = parentNode.getLinkedRecords(collectionName) || [];
+
+            parentNode.setLinkedRecords(
+                [...collection.filter((v) => v.getDataID() != record.getDataID()), record],
+                collectionName
+            );
+
+            if (onCompleted) return onCompleted(data);
         });
     };
 
