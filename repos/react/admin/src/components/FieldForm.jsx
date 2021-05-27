@@ -4,16 +4,8 @@ import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 import FormikMutationButton from "./FormikMutationButton";
 
-import { useRelayEnvironment, commitLocalUpdate } from "react-relay";
-
 const FieldForm = (props) => {
     const { EntityId, onCompleted } = props;
-
-    // const environment = useRelayEnvironment();
-    // commitLocalUpdate(environment, (store) => {
-    //     const records = store.getRoot().getLinkedRecords("entities");
-    //     console.log(records);
-    // });
 
     return (
         <Formik initialValues={{ name: "", EntityId }}>
