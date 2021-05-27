@@ -26,7 +26,14 @@ const MutationButton = (props) => {
             const parentNode = parent
                 .split(".")
                 .slice(0, -1)
-                .reduce((acc, elmt) => acc.getLinkedRecord(elmt), store.getRoot());
+                .reduce((acc, elmt) => {
+                    const match = elmt.match(/(.*)\[(.*)\]/);
+                    if (match) {
+                        const [_, group, id] = match;
+                        return acc.getLinkedRecords(group).filter((e) => e.getDataID() == id)[0];
+                    }
+                    return acc.getLinkedRecord(elmt);
+                }, store.getRoot());
             const collectionName = parent.split(".").splice(-1);
             const collection = parentNode.getLinkedRecords(collectionName) || [];
 

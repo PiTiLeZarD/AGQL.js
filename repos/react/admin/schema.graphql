@@ -5,8 +5,9 @@ directive @specifiedBy(
 ) on SCALAR
 
 type Entity {
-  id: String
+  id: ID!
   name: String
+  fields: [Field]
 }
 
 input EntityInput {
@@ -17,8 +18,24 @@ type EntityOutput {
   node: Entity
 }
 
+type Field {
+  id: ID!
+  name: String
+  entity: Entity!
+}
+
+input FieldInput {
+  name: String!
+  EntityId: ID!
+}
+
+type FieldOutput {
+  node: Field
+}
+
 type Mutation {
   createEntity(input: EntityInput): EntityOutput
+  createField(input: FieldInput): FieldOutput
 }
 
 type Query {

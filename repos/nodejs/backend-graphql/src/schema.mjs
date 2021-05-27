@@ -2,19 +2,32 @@ import { buildSchema } from "graphql";
 
 const types = `
     type Entity {
-        id: String
+        id: ID!
         name: String
+        fields: [Field]
+    }
+    type Field {
+        id: ID!
+        name: String
+        entity: Entity!
     }
 `;
 const inputs = `
     input EntityInput {
         name: String!
     }
+    input FieldInput {
+        name: String!
+        EntityId: ID!
+    }
 `;
 
 const outputs = `
     type EntityOutput {
         node: Entity
+    }
+    type FieldOutput {
+        node: Field
     }
 `;
 
@@ -27,6 +40,7 @@ const queries = `
 const mutations = `
     type Mutation {
         createEntity(input: EntityInput): EntityOutput
+        createField(input: FieldInput): FieldOutput
     }
 `;
 

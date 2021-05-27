@@ -5,13 +5,13 @@ const { DataTypes } = sequelize;
 
 const model = {
     define: (db) =>
-        db.define("Entity", {
+        db.define("Field", {
             ...globalIdField(),
             name: {
                 type: DataTypes.STRING,
             },
         }),
-    link: (models) => models.Entity.hasMany(models.Field, { as: "fields", foreignKey: "entity_id" }),
+    link: (models) => models.Field.belongsTo(models.Entity, { as: "entity" }),
 };
 
 export default model;
