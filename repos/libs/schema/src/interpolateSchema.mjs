@@ -1,33 +1,35 @@
 import { schemaComposer } from "graphql-compose";
 import pluralize from "pluralize";
 
-const interpolateSchema = async (models, backendModels) => {
-    const entities = await backendModels.Entity.findAll({ include: [{ model: backendModels.Field, as: "fields" }] });
+const interpolateSchema = (models, description) => {};
 
-    const types = {};
+// const interpolateSchema = async (models, backendModels) => {
+//     const entities = await backendModels.Entity.findAll({ include: [{ model: backendModels.Field, as: "fields" }] });
 
-    entities.map((entity, i) => {
-        const typeName = `${entity.name}TC`;
+//     const types = {};
 
-        const fields = ["id: String!"].concat((entity.fields || []).map((field, i) => `${field.name}: String`));
+//     entities.map((entity, i) => {
+//         const typeName = `${entity.name}TC`;
 
-        types[typeName] = schemaComposer.createObjectTC(`
-            type ${entity.name} {
-                ${fields.join("\n")}
-            }
-        `);
+//         const fields = ["id: String!"].concat((entity.fields || []).map((field, i) => `${field.name}: String`));
 
-        schemaComposer.Query.addFields({
-            [pluralize.plural(entity.name).toLowerCase()]: {
-                type: [types[typeName]],
-                resolve: async () => models[entity.name].findAll(),
-            },
-        });
-    });
+//         types[typeName] = schemaComposer.createObjectTC(`
+//             type ${entity.name} {
+//                 ${fields.join("\n")}
+//             }
+//         `);
 
-    const schema = schemaComposer.buildSchema();
+//         schemaComposer.Query.addFields({
+//             [pluralize.plural(entity.name).toLowerCase()]: {
+//                 type: [types[typeName]],
+//                 resolve: async () => models[entity.name].findAll(),
+//             },
+//         });
+//     });
 
-    return { schema, types };
-};
+//     const schema = schemaComposer.buildSchema();
+
+//     return { schema, types };
+// };
 
 export default interpolateSchema;

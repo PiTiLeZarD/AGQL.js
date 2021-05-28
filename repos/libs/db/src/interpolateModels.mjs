@@ -1,19 +1,35 @@
-import globalIdField from "./globalIdField.mjs";
-import sequelize from "sequelize";
-const { DataTypes } = sequelize;
+const defineEntityContract = (db, { name, fields }) =>
+    db.define(
+        name,
+        Object.fromEntries(
+            fields.map((field, fi) => [
+                field.name,
+                {
+                    type: DataTypes.STRING,
+                },
+            ])
+        )
+    );
 
-const interpolateModels = async (db, backendModels) => {
-    const entities = await backendModels.Entity.findAll();
+const linkEntityContract = ({ name, links }, models) =>
+    links.map((link, li) => models[name][link.type](models[link.with], { as: link.alias }));
 
+const modelBuilder = (entity) => ({
+    define: (db) => defineEntityContract(db, entity),
+    link: (models) => linkEntityContract(entity, models),
+});
+
+const interpolateModels = (db, description) => {
     const models = {};
-    entities.map((entity, i) => {
-        models[entity.name] = db.define(entity.name, {
-            ...globalIdField(),
-            name: {
-                type: DataTypes.STRING,
-            },
-        });
+
+    const modelBuilders = description.map((item, i) => modelBuilders(item));
+
+    modelsList.map(({ define }, i) => {
+        const model = define(db);
+        models[model.name] = model;
     });
+
+    modelsList.map(({ link }, i) => link(models));
 
     return models;
 };
