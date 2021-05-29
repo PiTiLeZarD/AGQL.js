@@ -1,36 +1,57 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { graphql, useLazyLoadQuery } from "react-relay";
-import { Grid } from "@material-ui/core";
-
-import EntityList from "./EntityList";
-import EntityDetails from "./EntityDetails";
+import { Grid, Dialog, Button } from "@material-ui/core";
+import SearchBar from "material-ui-search-bar";
+import EntityCard from "./EntityCard";
+import EntityForm from "./EntityForm";
 
 const EntitiesQuery = graphql`
     query EntityManagerEntitiesQuery {
         entities {
-            id
             name
-            ...EntityDetails_entity
+            ...EntityCard_entity
         }
     }
 `;
 const EntityManager = (props) => {
-    const [selectedEntity, setSelectedEntity] = useState(null);
+    const [entityFormOpen, setEntityFormOpen] = useState(false);
+    const [searchText, setSearchText] = useState("");
 
     const { entities } = useLazyLoadQuery(EntitiesQuery);
 
-    return (
-        <Grid container spacing={8}>
-            <Grid item xs={2} />
-            <Grid item xs={4}>
-                <EntityList entities={entities} setSelectedEntity={setSelectedEntity} />
-            </Grid>
+    const filteredEntities = entities.filter((entity, ei) =>
+        entity.name.toLowerCase().includes(searchText.toLowerCase())
+    );
 
-            <Grid item xs={4}>
-                {selectedEntity != null && <EntityDetails data={selectedEntity} />}
+    return (
+        <Fragment>
+            <Dialog open={entityFormOpen} onClose={(ev) => setEntityFormOpen(false)}>
+                <EntityForm onCompleted={(entity) => setEntityFormOpen(false)} />
+            </Dialog>
+            <Grid container>
+                <Grid item xs={3} />
+                <Grid item xs={6}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={9}>
+                            <SearchBar
+                                value={searchText}
+                                onChange={(newValue) => setSearchText(newValue)}
+                                onCancelSearch={() => setSearchText("")}
+                            />
+                        </Grid>
+                        <Grid item xs={3} style={{ textAlign: "center", paddingTop: "11px" }}>
+                            <Button variant="contained" onClick={(ev) => setEntityFormOpen(true)}>
+                                Add Entity
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    {filteredEntities.map((entity, i) => (
+                        <EntityCard key={i} data={entity} />
+                    ))}
+                </Grid>
+                <Grid item xs={3} />
             </Grid>
-            <Grid item xs={2} />
-        </Grid>
+        </Fragment>
     );
 };
 
