@@ -5,16 +5,16 @@ import { TextField } from "formik-material-ui";
 import FormikMutationButton from "./FormikMutationButton";
 
 const FieldForm = (props) => {
-    const { EntityId, onCompleted } = props;
+    const { entity_id, onCompleted } = props;
 
     return (
-        <Formik initialValues={{ name: "", EntityId }}>
+        <Formik initialValues={{ name: "", entity_id }}>
             <Form>
                 <Card>
                     <CardHeader title="Add a new Field" />
                     <CardContent>
                         <Field name="name" component={TextField} label="Name" />
-                        <Field name="EntityId" component={TextField} type="hidden" />
+                        <Field name="entity_id" component={TextField} type="hidden" />
                     </CardContent>
                     <CardActions>
                         <FormikMutationButton
@@ -32,7 +32,7 @@ const FieldForm = (props) => {
                             `}
                             linkRecordsParams={({ createField }) => [
                                 createField.node.id,
-                                `entities[${EntityId}].fields`,
+                                `entities[${entity_id}].fields`,
                             ]}
                             variables={(formikContext) => ({ input: formikContext })}
                             onCompleted={({ createField }) => {

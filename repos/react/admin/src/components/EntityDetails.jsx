@@ -46,7 +46,7 @@ const EntityDetails = (props) => {
             />
             <CardContent>
                 <Dialog open={addFieldFormOpen} onClose={(ev) => setAddFieldFormOpen(false)}>
-                    <FieldForm EntityId={entity.id} onCompleted={(field) => setAddFieldFormOpen(false)} />
+                    <FieldForm entity_id={entity.id} onCompleted={(field) => setAddFieldFormOpen(false)} />
                 </Dialog>
                 <List>
                     {(entity.fields || []).map((field, i) => (
