@@ -15,6 +15,9 @@ const globalIdField = () => [
                 primaryKey: true,
                 autoIncrement: true,
             },
+            gql: {
+                hide: true,
+            },
         },
     },
     {
@@ -24,6 +27,13 @@ const globalIdField = () => [
             db: {
                 get: function () {
                     return toGlobalId(this.constructor.name, this.get("_id"));
+                },
+                set: function (value) {
+                    const { typeName, id } = fromGlobalId(value);
+                    if (typeName != this.constructor.name) {
+                        throw new Error("Invalid ID provided");
+                    }
+                    this.setDataValue("_id", id);
                 },
             },
         },

@@ -5,7 +5,9 @@ const interpolateSchema = (models, description) => {
 
     description.map((entity, ei) => {
         const typeName = `${entity.name}TC`;
-        const fields = entity.fields.map((field, fi) => `${field.name}: ${field.type.gql}`);
+        const fields = entity.fields.map((field, fi) =>
+            ((field.params || {}).gql || {}).hide ? "" : `${field.name}: ${field.type.gql}`
+        );
         const links = (entity.links || []).map((link, i) =>
             link.expose
                 ? link.type == "hasMany"
