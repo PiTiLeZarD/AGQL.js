@@ -66,8 +66,9 @@ const interpolateSchema = (models, description) => {
 
             types[`${entity.name}InputTC`] = schemaComposer.createInputTC(`
                 input ${entity.name}Input {
+                    id: ID
                     ${fields.slice(1).join("\n")}
-                    ${inputLinks.map((l) => `${l}: ID!`).join("\n")}
+                    ${inputLinks.map((l) => `${l}: ID`).join("\n")}
                 }
             `);
             types[`${entity.name}OutputTC`] = schemaComposer.createObjectTC(`
@@ -89,6 +90,38 @@ const interpolateSchema = (models, description) => {
                             }
                         });
                         return { node: await models[entity.name].create({ ...input }) };
+                    },
+                },
+            });
+            schemaComposer.Mutation.addFields({
+                [`update${entity.name}`]: {
+                    type: `${entity.name}Output`,
+                    args: {
+                        input: `${entity.name}Input!`,
+                    },
+                    resolve: async (_, { input }) => {
+                        Object.keys(input).forEach((key) => {
+                            if (inputLinks.indexOf(key) >= 0) {
+                                input[key] = fromGlobalId(input[key])[1];
+                            }
+                        });
+                        const obj = await models[entity.name].findByPk(fromGlobalId(input.id)[1]);
+                        Object.keys(input).forEach((key) => (key != "id" ? (obj[key] = input[key]) : null));
+                        await obj.save();
+                        return { node: obj };
+                    },
+                },
+            });
+            schemaComposer.Mutation.addFields({
+                [`delete${entity.name}`]: {
+                    type: `${entity.name}Output`,
+                    args: {
+                        input: `${entity.name}Input!`,
+                    },
+                    resolve: async (_, { input }) => {
+                        const obj = await models[entity.name].findByPk(fromGlobalId(input.id)[1]);
+                        await obj.destroy();
+                        return { node: { id: input.id } };
                     },
                 },
             });
