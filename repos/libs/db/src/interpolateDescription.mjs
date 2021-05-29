@@ -13,6 +13,7 @@ const interpolateDescription = (models) =>
             ),
             params: {
                 query: pluralize.plural(entity.name).toLowerCase(),
+                crud: true,
             },
         }))
     );

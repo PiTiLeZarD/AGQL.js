@@ -22,7 +22,7 @@ const bootstrap = async (app) => {
     const models = interpolateModels(testDb, description);
     const { schema } = interpolateSchema(models, description);
 
-    //testDb.sync({ alter: true });
+    testDb.sync({ alter: true });
 
     if (app.debug) {
         app.use("/graphql/playground", expressPlayground.default({ endpoint: "/graphql" }));
