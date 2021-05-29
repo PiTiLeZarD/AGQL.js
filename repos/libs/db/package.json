@@ -2,7 +2,8 @@
     "name": "@agql.js/db",
     "version": "1.0.0",
     "dependencies": {
-        "sequelize": "^6.6.2"
+        "sequelize": "^6.6.2",
+        "pluralize": "^8.0.0"
     },
     "main": "src/index.mjs"
 }

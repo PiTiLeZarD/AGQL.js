@@ -1,35 +1,50 @@
 import { schemaComposer } from "graphql-compose";
-import pluralize from "pluralize";
 
-const interpolateSchema = (models, description) => {};
+const interpolateSchema = (models, description) => {
+    const types = {};
 
-// const interpolateSchema = async (models, backendModels) => {
-//     const entities = await backendModels.Entity.findAll({ include: [{ model: backendModels.Field, as: "fields" }] });
+    description.map((entity, ei) => {
+        const typeName = `${entity.name}TC`;
+        const fields = entity.fields.map((field, fi) => `${field.name}: ${field.type.gql}`);
+        const links = (entity.links || []).map((link, i) =>
+            link.expose
+                ? link.type == "hasMany"
+                    ? `${link.alias}: [${link.with}]`
+                    : `${link.alias}: ${link.with}`
+                : ""
+        );
 
-//     const types = {};
+        types[typeName] = schemaComposer.createObjectTC(`
+            type ${entity.name} {
+                ${fields.join("\n")}
+                ${links.join("\n")}
+            }
+        `);
 
-//     entities.map((entity, i) => {
-//         const typeName = `${entity.name}TC`;
+        if ((entity.params || {}).query) {
+            schemaComposer.Query.addFields({
+                [entity.params.query]: {
+                    type: [types[typeName]],
+                    resolve: async () => {
+                        const linksConfig =
+                            (entity.links || []).length > 0
+                                ? {
+                                      include: entity.links.map((link, i) => ({
+                                          model: models[link.with],
+                                          as: link.alias,
+                                      })),
+                                  }
+                                : {};
+                        return models[entity.name].findAll(linksConfig);
+                    },
+                },
+            });
+        }
+    });
 
-//         const fields = ["id: String!"].concat((entity.fields || []).map((field, i) => `${field.name}: String`));
+    const schema = schemaComposer.buildSchema();
 
-//         types[typeName] = schemaComposer.createObjectTC(`
-//             type ${entity.name} {
-//                 ${fields.join("\n")}
-//             }
-//         `);
-
-//         schemaComposer.Query.addFields({
-//             [pluralize.plural(entity.name).toLowerCase()]: {
-//                 type: [types[typeName]],
-//                 resolve: async () => models[entity.name].findAll(),
-//             },
-//         });
-//     });
-
-//     const schema = schemaComposer.buildSchema();
-
-//     return { schema, types };
-// };
+    return { schema, types };
+};
 
 export default interpolateSchema;

@@ -1,13 +1,10 @@
-import { AgqlDataTypes } from "./AgqlDataTypes";
+import AgqlDataTypes from "./AgqlDataTypes.mjs";
+import globalIdField from "./globalIdField.mjs";
 
 const dbDescription = [
     {
         name: "Entity",
-        fields: [
-            {
-                name: "id",
-                type: AgqlDataTypes.globalId,
-            },
+        fields: globalIdField().concat([
             {
                 name: "name",
                 type: AgqlDataTypes.String,
@@ -15,14 +12,14 @@ const dbDescription = [
                     required: true,
                 },
             },
-        ],
+        ]),
         links: [
             {
                 type: "hasMany",
                 with: "Field",
                 alias: "fields",
                 expose: true,
-                foreign_key: "entity_id",
+                foreignKey: "entity_id",
             },
         ],
         params: {
@@ -32,16 +29,12 @@ const dbDescription = [
     },
     {
         name: "Field",
-        fields: [
-            {
-                name: "id",
-                type: AgqlDataTypes.globalId,
-            },
+        fields: globalIdField().concat([
             {
                 name: "name",
                 type: AgqlDataTypes.String,
             },
-        ],
+        ]),
         links: [
             {
                 type: "belongsTo",

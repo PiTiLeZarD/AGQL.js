@@ -1,5 +1,4 @@
-import sequelize from "sequelize";
-const { DataTypes } = sequelize;
+import AgqlDataTypes from "./AgqlDataTypes.mjs";
 
 const toGlobalId = (typeName, id) => Buffer.from(`${typeName}:${id}`).toString("base64");
 const fromGlobalId = (globalId) =>
@@ -7,18 +6,28 @@ const fromGlobalId = (globalId) =>
 
 export { toGlobalId, fromGlobalId };
 
-const globalIdField = () => ({
-    _id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    id: {
-        type: DataTypes.VIRTUAL,
-        get: function () {
-            return toGlobalId(this.constructor.name, this.get("_id"));
+const globalIdField = () => [
+    {
+        name: "_id",
+        type: AgqlDataTypes.Integer,
+        params: {
+            db: {
+                primaryKey: true,
+                autoIncrement: true,
+            },
         },
     },
-});
+    {
+        name: "id",
+        type: AgqlDataTypes.globalId,
+        params: {
+            db: {
+                get: function () {
+                    return toGlobalId(this.constructor.name, this.get("_id"));
+                },
+            },
+        },
+    },
+];
 
 export default globalIdField;
