@@ -1,7 +1,7 @@
-import { Card, CardHeader, CardContent, CardActions } from "@material-ui/core";
+import { Card, CardHeader, CardContent, CardActions, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import { graphql } from "react-relay";
 import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-material-ui";
+import { TextField, Select } from "formik-material-ui";
 import FormikMutationButton from "./FormikMutationButton";
 
 const FieldForm = (props) => {
@@ -13,7 +13,19 @@ const FieldForm = (props) => {
                 <Card>
                     <CardHeader title="Add a new Field" />
                     <CardContent>
-                        <Field name="name" component={TextField} label="Name" />
+                        <div>
+                            <Field name="name" component={TextField} label="Name" />
+                        </div>
+                        <div>
+                            <FormControl style={{ width: "100%" }}>
+                                <InputLabel htmlFor="type">Type</InputLabel>
+                                <Field component={Select} name="type" inputProps={{ id: "type" }}>
+                                    <MenuItem value="globalId">globalId</MenuItem>
+                                    <MenuItem value="String">String</MenuItem>
+                                    <MenuItem value="Integer">Integer</MenuItem>
+                                </Field>
+                            </FormControl>
+                        </div>
                         <Field name="entity_id" component={TextField} type="hidden" />
                     </CardContent>
                     <CardActions>
@@ -26,6 +38,7 @@ const FieldForm = (props) => {
                                         node {
                                             id
                                             name
+                                            type
                                         }
                                     }
                                 }

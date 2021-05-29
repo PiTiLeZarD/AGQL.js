@@ -47,6 +47,7 @@ const EntityCard = (props) => {
                 fields {
                     id
                     name
+                    type
                 }
             }
         `,
@@ -81,7 +82,7 @@ const EntityCard = (props) => {
                     <List>
                         {(entity.fields || []).map((field, i) => (
                             <ListItem key={i} button>
-                                <ListItemText primary={field.name} />
+                                <ListItemText primary={`${field.name}: ${field.type}`} />
                             </ListItem>
                         ))}
                     </List>

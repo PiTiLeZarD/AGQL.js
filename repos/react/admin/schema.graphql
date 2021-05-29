@@ -1,42 +1,45 @@
 type Entity {
-    id: ID!
-    name: String
-    fields: [Field]
+  id: ID!
+  name: String
+  fields: [Field]
 }
 
 input EntityInput {
-    id: ID
-    name: String
+  id: ID
+  name: String
 }
 
 type EntityOutput {
-    node: Entity
+  node: Entity
 }
 
 type Field {
-    id: ID!
-    name: String
+  id: ID!
+  name: String
+  type: String
 }
 
 input FieldInput {
-    id: ID
-    name: String
-    entity_id: ID
+  id: ID
+  name: String
+  type: String
+  entity_id: ID
 }
 
 type FieldOutput {
-    node: Field
+  node: Field
 }
 
 type Mutation {
-    createEntity(input: EntityInput!): EntityOutput
-    updateEntity(input: EntityInput!): EntityOutput
-    deleteEntity(input: EntityInput!): EntityOutput
-    createField(input: FieldInput!): FieldOutput
-    updateField(input: FieldInput!): FieldOutput
-    deleteField(input: FieldInput!): FieldOutput
+  createEntity(input: EntityInput!): EntityOutput
+  updateEntity(input: EntityInput!): EntityOutput
+  deleteEntity(input: EntityInput!): EntityOutput
+  createField(input: FieldInput!): FieldOutput
+  updateField(input: FieldInput!): FieldOutput
+  deleteField(input: FieldInput!): FieldOutput
 }
 
 type Query {
-    entities: [Entity]
+  entities: [Entity]
 }
+

@@ -34,6 +34,10 @@ const dbDescription = [
                 name: "name",
                 type: AgqlDataTypes.String,
             },
+            {
+                name: "type",
+                type: AgqlDataTypes.String,
+            },
         ]),
         links: [
             {

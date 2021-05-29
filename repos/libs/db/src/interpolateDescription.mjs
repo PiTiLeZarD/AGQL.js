@@ -8,7 +8,7 @@ const interpolateDescription = (models) =>
             fields: globalIdField().concat(
                 (entity.fields || []).map((field, fi) => ({
                     name: field.name,
-                    type: AgqlDataTypes.String,
+                    type: AgqlDataTypes[field.type],
                 }))
             ),
             params: {
