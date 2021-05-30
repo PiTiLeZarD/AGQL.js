@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { useFragment, graphql } from "react-relay";
 import {
     withStyles,
@@ -13,8 +13,11 @@ import {
     Tab,
     Dialog,
     Fab,
+    IconButton,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import styles from "../styles/EntityCard";
 import FieldForm from "./FieldForm";
 import MutationButton from "./MutationButton";
@@ -36,6 +39,8 @@ const TabPanel = (props) => {
 
 const EntityCard = (props) => {
     const { classes, data } = props;
+
+    if (!data) return null;
 
     const [currentTab, setCurrentTab] = useState(0);
     const [fieldFormOpen, setFieldFormOpen] = useState(false);
@@ -70,7 +75,33 @@ const EntityCard = (props) => {
 
     return (
         <Card className={classes.card}>
-            <CardHeader title={entity.name} subheader={`ID: ${entity.id}`} />
+            <CardHeader
+                title={entity.name}
+                subheader={`ID: ${entity.id}`}
+                action={
+                    <Fragment>
+                        <IconButton>
+                            <EditIcon />
+                        </IconButton>
+                        <MutationButton
+                            Component={IconButton}
+                            color="default"
+                            label={<DeleteIcon />}
+                            mutation={graphql`
+                                mutation EntityCardDeleteEntityMutation($input: EntityInput!) {
+                                    deleteEntity(input: $input) {
+                                        node {
+                                            id
+                                        }
+                                    }
+                                }
+                            `}
+                            linkRecordsParams={({ deleteEntity }) => [deleteEntity.node.id, null]}
+                            variables={{ input: { id: entity.id } }}
+                        />
+                    </Fragment>
+                }
+            />
             <CardContent>
                 <Dialog open={fieldFormOpen} onClose={(ev) => setFieldFormOpen(false)}>
                     <FieldForm entity_id={entity.id} onCompleted={(field) => setFieldFormOpen(false)} />

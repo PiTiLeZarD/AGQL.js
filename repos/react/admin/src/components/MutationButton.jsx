@@ -8,7 +8,8 @@ import { useMutation, useRelayEnvironment, commitLocalUpdate } from "react-relay
  * `MutationButton` is an all managed button committing a graphql mutation using react-relay and manages inflight/errors
  */
 const MutationButton = (props) => {
-    const { mutation, label, variables, linkRecordsParams, onCompleted, onError, onClick, ...otherProps } = props;
+    const { mutation, label, variables, linkRecordsParams, onCompleted, onError, onClick, Component, ...otherProps } =
+        props;
 
     const [commit, isInFlight] = useMutation(mutation);
     const [error, setError] = useState(false);
@@ -20,8 +21,9 @@ const MutationButton = (props) => {
         commitLocalUpdate(environment, (store) => {
             if (parent == null) {
                 store.delete(nodeId);
-                if (onCompleted) return onCompleted(data);
+                return onCompleted ? onCompleted(data) : data;
             }
+
             const record = store.get(nodeId);
             const parentNode = parent
                 .split(".")
@@ -69,17 +71,18 @@ const MutationButton = (props) => {
     }
 
     return (
-        <Button
+        <Component
             onClick={onClick ? onClick(handleClick) : handleClick}
             {...{ color: "primary", variant: "contained", ...otherProps }}
         >
             {label}
-        </Button>
+        </Component>
     );
 };
 
 MutationButton.defaultProps = {
     variables: {},
+    Component: Button,
 };
 
 export default MutationButton;
