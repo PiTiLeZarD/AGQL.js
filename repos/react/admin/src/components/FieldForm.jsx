@@ -4,6 +4,47 @@ import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import FormikMutationButton from "./FormikMutationButton";
 
+const updateMutation = graphql`
+    mutation FieldFormSaveMutation($input: FieldInput!) {
+        updateField(input: $input) {
+            node {
+                id
+                name
+                type
+            }
+        }
+    }
+`;
+
+const createMutation = graphql`
+    mutation FieldFormAddMutation($input: FieldInput!) {
+        createField(input: $input) {
+            node {
+                id
+                name
+                type
+            }
+        }
+    }
+`;
+
+const ActionButton = (props) => {
+    const { entity_id, returnKey, mutation, onCompleted, children } = props;
+    return (
+        <FormikMutationButton
+            type="submit"
+            mutation={mutation}
+            linkRecordsParams={(props) => [props[returnKey].node.id, `entities[${entity_id}].fields`]}
+            variables={(formikContext) => ({ input: formikContext })}
+            onCompleted={(props) => {
+                if (onCompleted) onCompleted(props[returnKey].node);
+            }}
+        >
+            {children}
+        </FormikMutationButton>
+    );
+};
+
 const FieldForm = (props) => {
     const { entity_id, field, onCompleted } = props;
 
@@ -30,56 +71,24 @@ const FieldForm = (props) => {
                     </CardContent>
                     <CardActions>
                         {field && (
-                            <FormikMutationButton
-                                type="submit"
-                                mutation={graphql`
-                                    mutation FieldFormSaveMutation($input: FieldInput!) {
-                                        updateField(input: $input) {
-                                            node {
-                                                id
-                                                name
-                                                type
-                                            }
-                                        }
-                                    }
-                                `}
-                                linkRecordsParams={({ updateField }) => [
-                                    updateField.node.id,
-                                    `entities[${entity_id}].fields`,
-                                ]}
-                                variables={(formikContext) => ({ input: formikContext })}
-                                onCompleted={({ updateField }) => {
-                                    if (onCompleted) onCompleted(updateField.node);
-                                }}
+                            <ActionButton
+                                entity_id={entity_id}
+                                mutation={updateMutation}
+                                returnKey="updateField"
+                                onCompleted={onCompleted}
                             >
                                 Save
-                            </FormikMutationButton>
+                            </ActionButton>
                         )}
                         {!field && (
-                            <FormikMutationButton
-                                type="submit"
-                                mutation={graphql`
-                                    mutation FieldFormAddMutation($input: FieldInput!) {
-                                        createField(input: $input) {
-                                            node {
-                                                id
-                                                name
-                                                type
-                                            }
-                                        }
-                                    }
-                                `}
-                                linkRecordsParams={({ createField }) => [
-                                    createField.node.id,
-                                    `entities[${entity_id}].fields`,
-                                ]}
-                                variables={(formikContext) => ({ input: formikContext })}
-                                onCompleted={({ createField }) => {
-                                    if (onCompleted) onCompleted(createField.node);
-                                }}
+                            <ActionButton
+                                entity_id={entity_id}
+                                mutation={createMutation}
+                                returnKey="createField"
+                                onCompleted={onCompleted}
                             >
                                 Add
-                            </FormikMutationButton>
+                            </ActionButton>
                         )}
                     </CardActions>
                 </Card>
