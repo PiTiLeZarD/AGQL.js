@@ -46,8 +46,11 @@ const EntityCard = (props) => {
     if (!data) return null;
 
     const [currentTab, setCurrentTab] = useState(0);
-    const [fieldFormOpen, setFieldFormOpen] = useState(false);
+    const [fieldFormOpen, setFieldFormOpen] = useState(null);
     const [folded, setFolded] = useState(true);
+
+    const handleOpenFieldDialog = (field) => (ev) => setFieldFormOpen(field);
+    const handleCloseFieldDialog = (ev) => setFieldFormOpen(null);
 
     const entity = useFragment(
         graphql`
@@ -70,7 +73,7 @@ const EntityCard = (props) => {
             if (!hasFields) {
                 alert("Add an ID first!");
             } else {
-                setFieldFormOpen(true);
+                handleOpenFieldDialog(true)(ev);
             }
         } else {
             alert("Not implemented yet!");
@@ -121,8 +124,12 @@ const EntityCard = (props) => {
             />
             {!folded && (
                 <CardContent>
-                    <Dialog open={fieldFormOpen} onClose={(ev) => setFieldFormOpen(false)}>
-                        <FieldForm entity_id={entity.id} onCompleted={(field) => setFieldFormOpen(false)} />
+                    <Dialog open={fieldFormOpen != null} onClose={handleCloseFieldDialog}>
+                        <FieldForm
+                            entity_id={entity.id}
+                            field={fieldFormOpen !== true ? fieldFormOpen : null}
+                            onCompleted={handleCloseFieldDialog}
+                        />
                     </Dialog>
                     <Fab className={classes.fab} color="secondary" onClick={handleAddClick}>
                         <AddIcon />
@@ -141,7 +148,7 @@ const EntityCard = (props) => {
                                         <ListItemText primary={`${field.name}: ${field.type}`} />
                                         {field.type != "globalId" && (
                                             <ListItemSecondaryAction>
-                                                <IconButton edge="end">
+                                                <IconButton edge="end" onClick={handleOpenFieldDialog(field)}>
                                                     <EditIcon />
                                                 </IconButton>
                                                 <MutationButton

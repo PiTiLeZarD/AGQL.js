@@ -5,13 +5,13 @@ import { TextField, Select } from "formik-material-ui";
 import FormikMutationButton from "./FormikMutationButton";
 
 const FieldForm = (props) => {
-    const { entity_id, onCompleted } = props;
+    const { entity_id, field, onCompleted } = props;
 
     return (
-        <Formik initialValues={{ name: "", type: "String", entity_id }}>
+        <Formik initialValues={{ id: "", name: "", type: "String", ...(field || {}), entity_id }}>
             <Form>
                 <Card>
-                    <CardHeader title="Add a new Field" />
+                    <CardHeader title={field ? `Update a Field` : `Add a new Field`} />
                     <CardContent>
                         <div>
                             <Field name="name" component={TextField} label="Name" />
@@ -25,33 +25,62 @@ const FieldForm = (props) => {
                                 </Field>
                             </FormControl>
                         </div>
+                        <Field name="id" component={TextField} type="hidden" />
                         <Field name="entity_id" component={TextField} type="hidden" />
                     </CardContent>
                     <CardActions>
-                        <FormikMutationButton
-                            type="submit"
-                            mutation={graphql`
-                                mutation FieldFormAddMutation($input: FieldInput!) {
-                                    createField(input: $input) {
-                                        node {
-                                            id
-                                            name
-                                            type
+                        {field && (
+                            <FormikMutationButton
+                                type="submit"
+                                mutation={graphql`
+                                    mutation FieldFormSaveMutation($input: FieldInput!) {
+                                        updateField(input: $input) {
+                                            node {
+                                                id
+                                                name
+                                                type
+                                            }
                                         }
                                     }
-                                }
-                            `}
-                            linkRecordsParams={({ createField }) => [
-                                createField.node.id,
-                                `entities[${entity_id}].fields`,
-                            ]}
-                            variables={(formikContext) => ({ input: formikContext })}
-                            onCompleted={({ createField }) => {
-                                if (onCompleted) onCompleted(createField.node);
-                            }}
-                        >
-                            Save
-                        </FormikMutationButton>
+                                `}
+                                linkRecordsParams={({ updateField }) => [
+                                    updateField.node.id,
+                                    `entities[${entity_id}].fields`,
+                                ]}
+                                variables={(formikContext) => ({ input: formikContext })}
+                                onCompleted={({ updateField }) => {
+                                    if (onCompleted) onCompleted(updateField.node);
+                                }}
+                            >
+                                Save
+                            </FormikMutationButton>
+                        )}
+                        {!field && (
+                            <FormikMutationButton
+                                type="submit"
+                                mutation={graphql`
+                                    mutation FieldFormAddMutation($input: FieldInput!) {
+                                        createField(input: $input) {
+                                            node {
+                                                id
+                                                name
+                                                type
+                                            }
+                                        }
+                                    }
+                                `}
+                                linkRecordsParams={({ createField }) => [
+                                    createField.node.id,
+                                    `entities[${entity_id}].fields`,
+                                ]}
+                                variables={(formikContext) => ({ input: formikContext })}
+                                onCompleted={({ createField }) => {
+                                    if (onCompleted) onCompleted(createField.node);
+                                }}
+                            >
+                                Add
+                            </FormikMutationButton>
+                        )}
                     </CardActions>
                 </Card>
             </Form>
