@@ -19,6 +19,8 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import UnfoldLessIcon from "@material-ui/icons/UnfoldLess";
+import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import styles from "../styles/EntityCard";
 import FieldForm from "./FieldForm";
 import MutationButton from "./MutationButton";
@@ -45,6 +47,7 @@ const EntityCard = (props) => {
 
     const [currentTab, setCurrentTab] = useState(0);
     const [fieldFormOpen, setFieldFormOpen] = useState(false);
+    const [folded, setFolded] = useState(true);
 
     const entity = useFragment(
         graphql`
@@ -78,116 +81,130 @@ const EntityCard = (props) => {
         <Card className={classes.card}>
             <CardHeader
                 title={entity.name}
-                subheader={`ID: ${entity.id}`}
+                subheader={folded ? null : `ID: ${entity.id}`}
                 action={
                     <Fragment>
-                        <IconButton>
-                            <EditIcon />
-                        </IconButton>
-                        <MutationButton
-                            Component={IconButton}
-                            color="default"
-                            label={<DeleteIcon />}
-                            mutation={graphql`
-                                mutation EntityCardDeleteEntityMutation($input: EntityInput!) {
-                                    deleteEntity(input: $input) {
-                                        node {
-                                            id
+                        {!folded && (
+                            <Fragment>
+                                <IconButton>
+                                    <EditIcon />
+                                </IconButton>
+                                <MutationButton
+                                    Component={IconButton}
+                                    color="default"
+                                    label={<DeleteIcon />}
+                                    mutation={graphql`
+                                        mutation EntityCardDeleteEntityMutation($input: EntityInput!) {
+                                            deleteEntity(input: $input) {
+                                                node {
+                                                    id
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                            `}
-                            linkRecordsParams={({ deleteEntity }) => [deleteEntity.node.id, "entities"]}
-                            variables={{ input: { id: entity.id } }}
-                        />
+                                    `}
+                                    linkRecordsParams={({ deleteEntity }) => [deleteEntity.node.id, "entities"]}
+                                    variables={{ input: { id: entity.id } }}
+                                />
+                                <IconButton onClick={(ev) => setFolded(true)}>
+                                    <UnfoldLessIcon />
+                                </IconButton>
+                            </Fragment>
+                        )}
+                        {folded && (
+                            <IconButton onClick={(ev) => setFolded(false)}>
+                                <UnfoldMoreIcon />
+                            </IconButton>
+                        )}
                     </Fragment>
                 }
             />
-            <CardContent>
-                <Dialog open={fieldFormOpen} onClose={(ev) => setFieldFormOpen(false)}>
-                    <FieldForm entity_id={entity.id} onCompleted={(field) => setFieldFormOpen(false)} />
-                </Dialog>
-                <Fab className={classes.fab} color="secondary" onClick={handleAddClick}>
-                    <AddIcon />
-                </Fab>
-                <AppBar position="static">
-                    <Tabs value={currentTab} onChange={(ev, newValue) => setCurrentTab(newValue)}>
-                        <Tab label="Fields" />
-                        <Tab label="Links" />
-                    </Tabs>
-                </AppBar>
-                <TabPanel value={currentTab} index={0}>
-                    {hasFields && (
-                        <List>
-                            {entity.fields.map((field, i) => (
-                                <ListItem key={i} button>
-                                    <ListItemText primary={`${field.name}: ${field.type}`} />
-                                    {field.type != "globalId" && (
-                                        <ListItemSecondaryAction>
-                                            <IconButton edge="end">
-                                                <EditIcon />
-                                            </IconButton>
-                                            <MutationButton
-                                                Component={IconButton}
-                                                color="default"
-                                                label={<DeleteIcon />}
-                                                mutation={graphql`
-                                                    mutation EntityCardDeleteFieldMutation($input: FieldInput!) {
-                                                        deleteField(input: $input) {
-                                                            node {
-                                                                id
+            {!folded && (
+                <CardContent>
+                    <Dialog open={fieldFormOpen} onClose={(ev) => setFieldFormOpen(false)}>
+                        <FieldForm entity_id={entity.id} onCompleted={(field) => setFieldFormOpen(false)} />
+                    </Dialog>
+                    <Fab className={classes.fab} color="secondary" onClick={handleAddClick}>
+                        <AddIcon />
+                    </Fab>
+                    <AppBar position="static">
+                        <Tabs value={currentTab} onChange={(ev, newValue) => setCurrentTab(newValue)}>
+                            <Tab label="Fields" />
+                            <Tab label="Links" />
+                        </Tabs>
+                    </AppBar>
+                    <TabPanel value={currentTab} index={0}>
+                        {hasFields && (
+                            <List>
+                                {entity.fields.map((field, i) => (
+                                    <ListItem key={i} button>
+                                        <ListItemText primary={`${field.name}: ${field.type}`} />
+                                        {field.type != "globalId" && (
+                                            <ListItemSecondaryAction>
+                                                <IconButton edge="end">
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <MutationButton
+                                                    Component={IconButton}
+                                                    color="default"
+                                                    label={<DeleteIcon />}
+                                                    mutation={graphql`
+                                                        mutation EntityCardDeleteFieldMutation($input: FieldInput!) {
+                                                            deleteField(input: $input) {
+                                                                node {
+                                                                    id
+                                                                }
                                                             }
                                                         }
-                                                    }
-                                                `}
-                                                linkRecordsParams={({ deleteField }) => [
-                                                    deleteField.node.id,
-                                                    `entities[${entity.id}].fields`,
-                                                ]}
-                                                variables={{ input: { id: field.id } }}
-                                            />
-                                        </ListItemSecondaryAction>
-                                    )}
-                                </ListItem>
-                            ))}
-                        </List>
-                    )}
-                    {!hasFields && (
-                        <div className={classes.idContainer}>
-                            <MutationButton
-                                label="Add an ID to this entity"
-                                color="secondary"
-                                mutation={graphql`
-                                    mutation EntityCardAddIdMutation($input: FieldInput!) {
-                                        createField(input: $input) {
-                                            node {
-                                                id
-                                                name
-                                                type
+                                                    `}
+                                                    linkRecordsParams={({ deleteField }) => [
+                                                        deleteField.node.id,
+                                                        `entities[${entity.id}].fields`,
+                                                    ]}
+                                                    variables={{ input: { id: field.id } }}
+                                                />
+                                            </ListItemSecondaryAction>
+                                        )}
+                                    </ListItem>
+                                ))}
+                            </List>
+                        )}
+                        {!hasFields && (
+                            <div className={classes.idContainer}>
+                                <MutationButton
+                                    label="Add an ID to this entity"
+                                    color="secondary"
+                                    mutation={graphql`
+                                        mutation EntityCardAddIdMutation($input: FieldInput!) {
+                                            createField(input: $input) {
+                                                node {
+                                                    id
+                                                    name
+                                                    type
+                                                }
                                             }
                                         }
-                                    }
-                                `}
-                                linkRecordsParams={({ createField }) => [
-                                    createField.node.id,
-                                    `entities[${entity.id}].fields`,
-                                ]}
-                                variables={{
-                                    input: {
-                                        name: "id",
-                                        type: "globalId",
-                                        entity_id: entity.id,
-                                    },
-                                }}
-                            />
-                        </div>
-                    )}
-                </TabPanel>
+                                    `}
+                                    linkRecordsParams={({ createField }) => [
+                                        createField.node.id,
+                                        `entities[${entity.id}].fields`,
+                                    ]}
+                                    variables={{
+                                        input: {
+                                            name: "id",
+                                            type: "globalId",
+                                            entity_id: entity.id,
+                                        },
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </TabPanel>
 
-                <TabPanel value={currentTab} index={1}>
-                    <p>Nothing here yet</p>
-                </TabPanel>
-            </CardContent>
+                    <TabPanel value={currentTab} index={1}>
+                        <p>Nothing here yet</p>
+                    </TabPanel>
+                </CardContent>
+            )}
         </Card>
     );
 };
