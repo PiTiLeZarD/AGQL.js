@@ -2,6 +2,7 @@ const styles = (theme) => ({
     card: {
         margin: "1em auto",
         position: "relative",
+        paddingBottom: "2.5em",
     },
     sectionTitle: {
         borderBottom: "1px dashed black",

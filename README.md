@@ -15,6 +15,7 @@ I will update this readme if anything interesting happens but for now
 ```sh
 cd docker
 docker-compose run --rm --no-deps graphql yarn install
+docker-compose run --rm --no-deps admin yarn relay
 docker-compose up -d
 ```
 

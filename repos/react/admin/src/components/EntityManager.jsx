@@ -19,7 +19,7 @@ const EntityManager = (props) => {
 
     const { entities } = useLazyLoadQuery(EntitiesQuery);
 
-    const filteredEntities = entities.filter((entity, ei) =>
+    const filteredEntities = (entities || []).filter((entity, ei) =>
         entity.name.toLowerCase().includes(searchText.toLowerCase())
     );
 

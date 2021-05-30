@@ -8,6 +8,7 @@ import {
     List,
     ListItem,
     ListItemText,
+    ListItemSecondaryAction,
     AppBar,
     Tabs,
     Tab,
@@ -96,7 +97,7 @@ const EntityCard = (props) => {
                                     }
                                 }
                             `}
-                            linkRecordsParams={({ deleteEntity }) => [deleteEntity.node.id, null]}
+                            linkRecordsParams={({ deleteEntity }) => [deleteEntity.node.id, "entities"]}
                             variables={{ input: { id: entity.id } }}
                         />
                     </Fragment>
@@ -121,6 +122,32 @@ const EntityCard = (props) => {
                             {entity.fields.map((field, i) => (
                                 <ListItem key={i} button>
                                     <ListItemText primary={`${field.name}: ${field.type}`} />
+                                    {field.type != "globalId" && (
+                                        <ListItemSecondaryAction>
+                                            <IconButton edge="end">
+                                                <EditIcon />
+                                            </IconButton>
+                                            <MutationButton
+                                                Component={IconButton}
+                                                color="default"
+                                                label={<DeleteIcon />}
+                                                mutation={graphql`
+                                                    mutation EntityCardDeleteFieldMutation($input: FieldInput!) {
+                                                        deleteField(input: $input) {
+                                                            node {
+                                                                id
+                                                            }
+                                                        }
+                                                    }
+                                                `}
+                                                linkRecordsParams={({ deleteField }) => [
+                                                    deleteField.node.id,
+                                                    `entities[${entity.id}].fields`,
+                                                ]}
+                                                variables={{ input: { id: field.id } }}
+                                            />
+                                        </ListItemSecondaryAction>
+                                    )}
                                 </ListItem>
                             ))}
                         </List>

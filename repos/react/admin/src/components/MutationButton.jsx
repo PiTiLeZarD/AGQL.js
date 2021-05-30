@@ -8,8 +8,17 @@ import { useMutation, useRelayEnvironment, commitLocalUpdate } from "react-relay
  * `MutationButton` is an all managed button committing a graphql mutation using react-relay and manages inflight/errors
  */
 const MutationButton = (props) => {
-    const { mutation, label, variables, linkRecordsParams, onCompleted, onError, onClick, Component, ...otherProps } =
-        props;
+    const {
+        mutation,
+        label,
+        variables,
+        linkRecordsParams,
+        onCompleted,
+        onError,
+        onClick,
+        Component,
+        ...otherProps
+    } = props;
 
     const [commit, isInFlight] = useMutation(mutation);
     const [error, setError] = useState(false);
@@ -19,10 +28,8 @@ const MutationButton = (props) => {
         const [nodeId, parent] = linkRecordsParams(data);
 
         commitLocalUpdate(environment, (store) => {
-            if (parent == null) {
-                store.delete(nodeId);
-                return onCompleted ? onCompleted(data) : data;
-            }
+            const isDelete =
+                mutation.operation.selections.filter((selection, si) => selection.name.includes("delete")).length > 0;
 
             const record = store.get(nodeId);
             const parentNode = parent
@@ -39,10 +46,18 @@ const MutationButton = (props) => {
             const collectionName = parent.split(".").splice(-1);
             const collection = parentNode.getLinkedRecords(collectionName) || [];
 
-            parentNode.setLinkedRecords(
-                [...collection.filter((v) => v.getDataID() != record.getDataID()), record],
-                collectionName
-            );
+            if (isDelete) {
+                parentNode.setLinkedRecords(
+                    [...collection.filter((v) => v.getDataID() != record.getDataID())],
+                    collectionName
+                );
+                store.delete(nodeId);
+            } else {
+                parentNode.setLinkedRecords(
+                    [...collection.filter((v) => v.getDataID() != record.getDataID()), record],
+                    collectionName
+                );
+            }
 
             if (onCompleted) return onCompleted(data);
         });
