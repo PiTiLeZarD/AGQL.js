@@ -92,7 +92,6 @@ const EntityCard = (props) => {
                                 <MutationButton
                                     Component={IconButton}
                                     color="default"
-                                    label={<DeleteIcon />}
                                     mutation={graphql`
                                         mutation EntityCardDeleteEntityMutation($input: EntityInput!) {
                                             deleteEntity(input: $input) {
@@ -104,7 +103,9 @@ const EntityCard = (props) => {
                                     `}
                                     linkRecordsParams={({ deleteEntity }) => [deleteEntity.node.id, "entities"]}
                                     variables={{ input: { id: entity.id } }}
-                                />
+                                >
+                                    <DeleteIcon />
+                                </MutationButton>
                                 <IconButton onClick={(ev) => setFolded(true)}>
                                     <UnfoldLessIcon />
                                 </IconButton>
@@ -146,7 +147,6 @@ const EntityCard = (props) => {
                                                 <MutationButton
                                                     Component={IconButton}
                                                     color="default"
-                                                    label={<DeleteIcon />}
                                                     mutation={graphql`
                                                         mutation EntityCardDeleteFieldMutation($input: FieldInput!) {
                                                             deleteField(input: $input) {
@@ -161,7 +161,9 @@ const EntityCard = (props) => {
                                                         `entities[${entity.id}].fields`,
                                                     ]}
                                                     variables={{ input: { id: field.id } }}
-                                                />
+                                                >
+                                                    <DeleteIcon />
+                                                </MutationButton>
                                             </ListItemSecondaryAction>
                                         )}
                                     </ListItem>
@@ -171,7 +173,6 @@ const EntityCard = (props) => {
                         {!hasFields && (
                             <div className={classes.idContainer}>
                                 <MutationButton
-                                    label="Add an ID to this entity"
                                     color="secondary"
                                     mutation={graphql`
                                         mutation EntityCardAddIdMutation($input: FieldInput!) {
@@ -195,7 +196,9 @@ const EntityCard = (props) => {
                                             entity_id: entity.id,
                                         },
                                     }}
-                                />
+                                >
+                                    Add an ID to this entity
+                                </MutationButton>
                             </div>
                         )}
                     </TabPanel>

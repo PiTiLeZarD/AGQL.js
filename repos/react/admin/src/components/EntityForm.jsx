@@ -18,7 +18,6 @@ const EntityForm = (props) => {
                     <CardActions>
                         <FormikMutationButton
                             type="submit"
-                            label="Save"
                             mutation={graphql`
                                 mutation EntityFormAddMutation($input: EntityInput!) {
                                     createEntity(input: $input) {
@@ -34,7 +33,9 @@ const EntityForm = (props) => {
                             onCompleted={({ createEntity }) => {
                                 if (onCompleted) onCompleted(createEntity.node);
                             }}
-                        />
+                        >
+                            Save
+                        </FormikMutationButton>
                     </CardActions>
                 </Card>
             </Form>

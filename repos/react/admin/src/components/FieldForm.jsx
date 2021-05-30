@@ -30,7 +30,6 @@ const FieldForm = (props) => {
                     <CardActions>
                         <FormikMutationButton
                             type="submit"
-                            label="Save"
                             mutation={graphql`
                                 mutation FieldFormAddMutation($input: FieldInput!) {
                                     createField(input: $input) {
@@ -50,7 +49,9 @@ const FieldForm = (props) => {
                             onCompleted={({ createField }) => {
                                 if (onCompleted) onCompleted(createField.node);
                             }}
-                        />
+                        >
+                            Save
+                        </FormikMutationButton>
                     </CardActions>
                 </Card>
             </Form>

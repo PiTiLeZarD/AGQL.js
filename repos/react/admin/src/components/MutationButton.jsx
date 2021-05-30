@@ -10,13 +10,13 @@ import { useMutation, useRelayEnvironment, commitLocalUpdate } from "react-relay
 const MutationButton = (props) => {
     const {
         mutation,
-        label,
         variables,
         linkRecordsParams,
         onCompleted,
         onError,
         onClick,
         Component,
+        children,
         ...otherProps
     } = props;
 
@@ -44,19 +44,15 @@ const MutationButton = (props) => {
                     return acc.getLinkedRecord(elmt);
                 }, store.getRoot());
             const collectionName = parent.split(".").splice(-1);
-            const collection = parentNode.getLinkedRecords(collectionName) || [];
+            const collection = (parentNode.getLinkedRecords(collectionName) || []).filter(
+                (v) => v.getDataID() != record.getDataID()
+            );
 
             if (isDelete) {
-                parentNode.setLinkedRecords(
-                    [...collection.filter((v) => v.getDataID() != record.getDataID())],
-                    collectionName
-                );
+                parentNode.setLinkedRecords(collection, collectionName);
                 store.delete(nodeId);
             } else {
-                parentNode.setLinkedRecords(
-                    [...collection.filter((v) => v.getDataID() != record.getDataID()), record],
-                    collectionName
-                );
+                parentNode.setLinkedRecords([...collection, record], collectionName);
             }
 
             if (onCompleted) return onCompleted(data);
@@ -90,7 +86,7 @@ const MutationButton = (props) => {
             onClick={onClick ? onClick(handleClick) : handleClick}
             {...{ color: "primary", variant: "contained", ...otherProps }}
         >
-            {label}
+            {children}
         </Component>
     );
 };
