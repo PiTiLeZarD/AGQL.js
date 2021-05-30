@@ -17,6 +17,7 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import styles from "../styles/EntityCard";
 import FieldForm from "./FieldForm";
+import MutationButton from "./MutationButton";
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -53,10 +54,15 @@ const EntityCard = (props) => {
         `,
         data
     );
+    const hasFields = (entity.fields || []).length > 0;
 
     const handleAddClick = (ev) => {
         if (currentTab === 0) {
-            setFieldFormOpen(true);
+            if (!hasFields) {
+                alert("Add an ID first!");
+            } else {
+                setFieldFormOpen(true);
+            }
         } else {
             alert("Not implemented yet!");
         }
@@ -79,13 +85,45 @@ const EntityCard = (props) => {
                     </Tabs>
                 </AppBar>
                 <TabPanel value={currentTab} index={0}>
-                    <List>
-                        {(entity.fields || []).map((field, i) => (
-                            <ListItem key={i} button>
-                                <ListItemText primary={`${field.name}: ${field.type}`} />
-                            </ListItem>
-                        ))}
-                    </List>
+                    {hasFields && (
+                        <List>
+                            {entity.fields.map((field, i) => (
+                                <ListItem key={i} button>
+                                    <ListItemText primary={`${field.name}: ${field.type}`} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    )}
+                    {!hasFields && (
+                        <div className={classes.idContainer}>
+                            <MutationButton
+                                label="Add an ID to this entity"
+                                color="secondary"
+                                mutation={graphql`
+                                    mutation EntityCardAddIdMutation($input: FieldInput!) {
+                                        createField(input: $input) {
+                                            node {
+                                                id
+                                                name
+                                                type
+                                            }
+                                        }
+                                    }
+                                `}
+                                linkRecordsParams={({ createField }) => [
+                                    createField.node.id,
+                                    `entities[${entity.id}].fields`,
+                                ]}
+                                variables={{
+                                    input: {
+                                        name: "id",
+                                        type: "globalId",
+                                        entity_id: entity.id,
+                                    },
+                                }}
+                            />
+                        </div>
+                    )}
                 </TabPanel>
 
                 <TabPanel value={currentTab} index={1}>

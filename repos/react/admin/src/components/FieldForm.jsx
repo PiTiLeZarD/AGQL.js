@@ -8,7 +8,7 @@ const FieldForm = (props) => {
     const { entity_id, onCompleted } = props;
 
     return (
-        <Formik initialValues={{ name: "", entity_id }}>
+        <Formik initialValues={{ name: "", type: "String", entity_id }}>
             <Form>
                 <Card>
                     <CardHeader title="Add a new Field" />
@@ -20,7 +20,6 @@ const FieldForm = (props) => {
                             <FormControl style={{ width: "100%" }}>
                                 <InputLabel htmlFor="type">Type</InputLabel>
                                 <Field component={Select} name="type" inputProps={{ id: "type" }}>
-                                    <MenuItem value="globalId">globalId</MenuItem>
                                     <MenuItem value="String">String</MenuItem>
                                     <MenuItem value="Integer">Integer</MenuItem>
                                 </Field>

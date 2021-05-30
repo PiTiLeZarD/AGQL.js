@@ -12,5 +12,9 @@ const styles = (theme) => ({
         right: theme.spacing(2),
         zIndex: 1000,
     },
+    idContainer: {
+        textAlign: "center",
+        padding: "2em",
+    },
 });
 export default styles;
