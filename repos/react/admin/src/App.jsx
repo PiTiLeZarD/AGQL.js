@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { RelayEnvironmentProvider } from "react-relay";
 import RelayEnvironment from "./relay";
 
-import AgqlEffect from "./components/AgqlEffect";
-import EntityManager from "./components/EntityManager";
+import { AgqlEffect } from "./components";
+import { Home } from "./pages";
 
 const App = (props) => {
     return (
@@ -23,7 +23,7 @@ const App = (props) => {
             <Suspense fallback={"Loading ..."}>
                 <div style={{ margin: "3em auto" }}>
                     <AgqlEffect foreground="Graphql Made Easy" background="AGQL" size={80} />
-                    <EntityManager />
+                    <Home />
                 </div>
             </Suspense>
         </RelayEnvironmentProvider>

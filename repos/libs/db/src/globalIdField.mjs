@@ -29,9 +29,12 @@ const globalIdField = () => [
                     return toGlobalId(this.constructor.name, this.get("_id"));
                 },
                 set: function (value) {
+                    if (!value) {
+                        return;
+                    }
                     const { typeName, id } = fromGlobalId(value);
                     if (typeName != this.constructor.name) {
-                        throw new Error("Invalid ID provided");
+                        throw new Error(`Invalid ID provided (value: ${value} typeName: ${typeName} id: ${id})`);
                     }
                     this.setDataValue("_id", id);
                 },

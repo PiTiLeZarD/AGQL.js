@@ -2,7 +2,8 @@ import { Card, CardHeader, CardContent, CardActions } from "@material-ui/core";
 import { graphql } from "react-relay";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
-import FormikMutationButton from "./FormikMutationButton";
+
+import { FormikMutationButton } from "../components";
 
 const EntityForm = (props) => {
     const { onCompleted } = props;

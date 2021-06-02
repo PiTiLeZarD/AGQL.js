@@ -21,9 +21,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import UnfoldLessIcon from "@material-ui/icons/UnfoldLess";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
-import styles from "../styles/EntityCard";
-import FieldForm from "./FieldForm";
+
 import MutationButton from "./MutationButton";
+import { EntityCard as styles } from "../styles";
+import { FieldForm } from "../forms";
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;

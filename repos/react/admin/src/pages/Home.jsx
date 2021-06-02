@@ -2,18 +2,19 @@ import { Fragment, useState } from "react";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { Grid, Dialog, Button } from "@material-ui/core";
 import SearchBar from "material-ui-search-bar";
-import EntityCard from "./EntityCard";
-import EntityForm from "./EntityForm";
+
+import { EntityCard } from "../components";
+import { EntityForm } from "../forms";
 
 const EntitiesQuery = graphql`
-    query EntityManagerEntitiesQuery {
+    query HomeEntitiesQuery {
         entities {
             name
             ...EntityCard_entity
         }
     }
 `;
-const EntityManager = (props) => {
+const Home = (props) => {
     const [entityFormOpen, setEntityFormOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
 
@@ -55,4 +56,4 @@ const EntityManager = (props) => {
     );
 };
 
-export default EntityManager;
+export default Home;

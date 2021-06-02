@@ -4,3 +4,4 @@ yarn-error.log
 .parcel-cache
 dist
 __generated__
+.DS_Store

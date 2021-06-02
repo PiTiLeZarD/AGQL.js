@@ -2,7 +2,8 @@ import { Card, CardHeader, CardContent, CardActions, FormControl, InputLabel, Me
 import { graphql } from "react-relay";
 import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
-import FormikMutationButton from "./FormikMutationButton";
+
+import { FormikMutationButton } from "../components";
 
 const updateMutation = graphql`
     mutation FieldFormSaveMutation($input: FieldInput!) {
@@ -30,6 +31,7 @@ const createMutation = graphql`
 
 const ActionButton = (props) => {
     const { entity_id, returnKey, mutation, onCompleted, children } = props;
+
     return (
         <FormikMutationButton
             type="submit"
