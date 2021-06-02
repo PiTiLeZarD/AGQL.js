@@ -4,9 +4,10 @@ import { useFormikContext } from "formik";
 const FormikMutationButton = (props) => {
     const { variables, ...otherProps } = props;
 
-    const { values, validateForm } = useFormikContext();
+    const { values, validateForm, setSubmitting } = useFormikContext();
 
     const handleClick = (next) => (ev) => {
+        setSubmitting(true);
         if (otherProps.type == "submit")
             return validateForm().then((errors) => {
                 if (Object.keys(errors).length == 0) {
@@ -18,5 +19,4 @@ const FormikMutationButton = (props) => {
 
     return <MutationButton variables={variables(values)} {...otherProps} onClick={handleClick} />;
 };
-
 export default FormikMutationButton;
