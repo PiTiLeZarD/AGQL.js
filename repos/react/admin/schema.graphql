@@ -2,6 +2,7 @@ type Entity {
   id: ID!
   name: String
   fields: [Field]
+  links: [Link]
 }
 
 input EntityInput {
@@ -30,6 +31,27 @@ type FieldOutput {
   node: Field
 }
 
+type Link {
+  id: ID!
+  name: String
+  type: String
+  entity_to: Entity
+  field: Field
+}
+
+input LinkInput {
+  id: ID
+  name: String
+  type: String
+  entity_from_id: ID
+  entity_to_id: ID
+  field_id: ID
+}
+
+type LinkOutput {
+  node: Link
+}
+
 type Mutation {
   createEntity(input: EntityInput!): EntityOutput
   updateEntity(input: EntityInput!): EntityOutput
@@ -37,6 +59,9 @@ type Mutation {
   createField(input: FieldInput!): FieldOutput
   updateField(input: FieldInput!): FieldOutput
   deleteField(input: FieldInput!): FieldOutput
+  createLink(input: LinkInput!): LinkOutput
+  updateLink(input: LinkInput!): LinkOutput
+  deleteLink(input: LinkInput!): LinkOutput
 }
 
 type Query {

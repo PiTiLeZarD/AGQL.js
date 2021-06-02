@@ -21,6 +21,13 @@ const dbDescription = [
                 expose: true,
                 foreignKey: "entity_id",
             },
+            {
+                type: "hasMany",
+                with: "Link",
+                alias: "links",
+                expose: true,
+                foreignKey: "entity_from_id",
+            },
         ],
         params: {
             query: "entities",
@@ -44,6 +51,44 @@ const dbDescription = [
                 type: "belongsTo",
                 with: "Entity",
                 alias: "entity",
+            },
+        ],
+        params: {
+            crud: true,
+        },
+    },
+    {
+        name: "Link",
+        fields: globalIdField().concat([
+            {
+                name: "name",
+                type: AgqlDataTypes.String,
+            },
+            {
+                name: "type",
+                type: AgqlDataTypes.String,
+            },
+        ]),
+        links: [
+            {
+                type: "belongsTo",
+                with: "Entity",
+                alias: "entity_from",
+                foreignKey: "entity_from_id",
+            },
+            {
+                type: "belongsTo",
+                with: "Entity",
+                alias: "entity_to",
+                foreignKey: "entity_to_id",
+                expose: true,
+            },
+            {
+                type: "belongsTo",
+                with: "Field",
+                alias: "field",
+                foreignKey: "field_id",
+                expose: true,
             },
         ],
         params: {
